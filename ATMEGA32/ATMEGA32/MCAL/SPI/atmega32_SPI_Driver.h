@@ -51,19 +51,19 @@ typedef struct
 
 // @ref SPI_MCU_MODE_define.
 #define SPI_MCU_MODE_SLAVE		  0
-#define SPI_MCU_MODE_MASTER		 (1<<4)
+#define SPI_MCU_MODE_MASTER		  1
 
 
 // @ref SPI_DATA_ORDER_define.
 #define SPI_DATA_ORDER_MSB		 0
-#define SPI_DATA_ORDER_LSB		 (1<<5)
+#define SPI_DATA_ORDER_LSB		 1
 
 
 // @ref SPI_CLOCK_POLARITY_PHASE_define.
 #define SPI_CLOCK_POLARITY_PHASE_LOW_FIRST		0
-#define SPI_CLOCK_POLARITY_PHASE_LOW_LAST		(1<<2)
-#define SPI_CLOCK_POLARITY_PHASE_HIGH_FIRST		(1<<3)	
-#define SPI_CLOCK_POLARITY_PHASE_HIGH_LAST		((1<<2) | (1<<3)) 
+#define SPI_CLOCK_POLARITY_PHASE_LOW_LAST		1
+#define SPI_CLOCK_POLARITY_PHASE_HIGH_FIRST		2	
+#define SPI_CLOCK_POLARITY_PHASE_HIGH_LAST		3 
 
 // @ref SPI_CLOCK_RATE_define.
 #define SPI_CLOCK_RATE_DIV_4					0
@@ -77,7 +77,7 @@ typedef struct
 
 // @ref SPI_INT_define.
 #define SPI_INT_DISABLE							0
-#define SPI_INT_ENABLE							(1<<7)
+#define SPI_INT_ENABLE							1
 
 // ===================================================
 // ================== APIs Functions =================

@@ -36,7 +36,7 @@ typedef struct
 } LCD_Config_t;
 
 /* This specifies the data pins of LCD and port of this pins. */
-#define LCD_DATAPORT	LCD_DATAPORT_C // This parameter must be a value of @ref LCD_DATAPORT_define.
+#define LCD_DATAPORT	LCD_DATAPORT_A // This parameter must be a value of @ref LCD_DATAPORT_define.
 
 // This parameter must be a value of @ref LCD_DB_define.
 // The following four pins must be defined if the lcd configured in 8 bit mode

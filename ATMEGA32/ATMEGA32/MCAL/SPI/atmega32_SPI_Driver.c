@@ -21,9 +21,9 @@
  * ==============================================================================
  */
 
-void (* gptr2IRQ_CallBack) (void);
+void (* GPtr2IRQ_CallBack) (void);
 
-SPI_TypeDef* SPIx = SPI;
+SPI_TypeDef* SPI = SPIx;
 
 /*
  * ===========================================================================
@@ -60,16 +60,37 @@ SPI_TypeDef* SPIx = SPI;
 */
 void MCAL_SPI_Init(SPI_Config_t *Config)
 {
-	uint8 tempConfig = 0;
-	tempConfig |= Config->SPI_MasterSlaveSelect;
-	tempConfig |= Config->SPI_DataOrder;
-	tempConfig |= Config->SPI_ClockPolarityPhase;
-	tempConfig |= (Config->SPI_ClockRate & 0x03);
-	tempConfig |= Config->SPI_INT_EN;
-	tempConfig |= (1<<6);
+	//uint8 tempConfig = 0;
+	//tempConfig |= Config->SPI_MasterSlaveSelect;
+	//tempConfig |= Config->SPI_DataOrder;
+	//tempConfig |= Config->SPI_ClockPolarityPhase;
+	//tempConfig |= (Config->SPI_ClockRate & 0x03);
+	//tempConfig |= Config->SPI_INT_EN;
+	//tempConfig |= (1<<6);
 	
-	SPIx->SPSR |= (Config->SPI_ClockRate >> 2);
-
+	// Master or Slave.
+	SPI->_SPCR.bit._MSTR = Config->SPI_MasterSlaveSelect;
+	
+	// Data Order.
+	SPI->_SPCR.bit._DORD = Config->SPI_DataOrder;
+	
+	// Clock Polarity and Phase.
+	// CPOL  CPHA
+	SPI->_SPCR.bit._CPHA = Config->SPI_ClockPolarityPhase;
+	SPI->_SPCR.bit._CPOL = Config->SPI_ClockPolarityPhase >> 1;
+	
+	// Clock Rate.
+	SPI->_SPCR.bit._SPRx	= Config->SPI_ClockRate;
+	SPI->_SPSR.bit._SPI2X	= Config->SPI_ClockRate >> 2;
+	
+	// Enable Interrupt.
+	SPI->_SPCR.bit._SPIE	= Config->SPI_INT_EN;
+	
+	// CallBack Function.
+	GPtr2IRQ_CallBack = Config->ptr2IRQ_CallBack;
+	
+	//SPI->SPSR |= (Config->SPI_ClockRate >> 2);
+//
 	GPIO_PinConfig_t pinConfig;
 	if(Config->SPI_MasterSlaveSelect == SPI_MCU_MODE_MASTER)
 	{
@@ -90,11 +111,13 @@ void MCAL_SPI_Init(SPI_Config_t *Config)
 		pinConfig.GPIO_PinMode = GPIO_MODE_OUTPUT;
 		MCAL_GPIO_Init(SPI_PORT, &pinConfig);
 	}
+	//
+	//
+	//gptr2IRQ_CallBack = Config->ptr2IRQ_CallBack;
+//
+	//SPI->SPCR = tempConfig;
 	
-	
-	gptr2IRQ_CallBack = Config->ptr2IRQ_CallBack;
-
-	SPIx->SPCR = tempConfig;
+	SPI->_SPCR.bit._SPE = 1;
 }
 
 /**================================================================
@@ -106,9 +129,9 @@ void MCAL_SPI_Init(SPI_Config_t *Config)
 */
 void MCAL_SPI_Tx(uint8 data)
 {	
-	SPIx->SPDR = data;
+	SPI->_SPDR = data;
 
-	while(!(SPIx->SPSR & (1<<SPI_SPIF)));
+	while(!SPI->_SPSR.bit._SPIF);
 }
 
 /**================================================================
@@ -120,9 +143,9 @@ void MCAL_SPI_Tx(uint8 data)
 */
 uint8 MCAL_SPI_Rx(void)
 {
-	while(!(SPIx->SPSR & (1<<SPI_SPIF)));
+	while(!SPI->_SPSR.bit._SPIF);
 	
-	return SPIx->SPDR;
+	return SPI->_SPDR;
 }
 
 

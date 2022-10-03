@@ -36,10 +36,14 @@ SUBDIRS :=  \
 ../HAL/LCD \
 ../HAL/keypad \
 ../HAL/7SEG \
+../HAL/MAX7221 \
 ../INC \
 ../HAL \
 ../MCAL \
 ../MCAL/GPIO/ \
+../MCAL/EXTI \
+../MCAL/TWI \
+../MCAL/USART \
 ../MCAL/SPI
 
 
@@ -48,8 +52,11 @@ C_SRCS +=  \
 ../ATMEGA32.c \
 ../HAL/keypad/keypad.c \
 ../HAL/LCD/LCD.c \
+../HAL/MAX7221/MAX7221.c \
+../MCAL/EXTI/atmega32_EXTI_Driver.c \
 ../MCAL/GPIO/atmega32_GPIO_Driver.c \
-../MCAL/SPI/atmega32_SPI_Driver.c
+../MCAL/SPI/atmega32_SPI_Driver.c \
+../MCAL/USART/atmega32_USART_Driver.c
 
 
 PREPROCESSING_SRCS += 
@@ -62,29 +69,41 @@ OBJS +=  \
 ATMEGA32.o \
 HAL/keypad/keypad.o \
 HAL/LCD/LCD.o \
+HAL/MAX7221/MAX7221.o \
+MCAL/EXTI/atmega32_EXTI_Driver.o \
 MCAL/GPIO/atmega32_GPIO_Driver.o \
-MCAL/SPI/atmega32_SPI_Driver.o
+MCAL/SPI/atmega32_SPI_Driver.o \
+MCAL/USART/atmega32_USART_Driver.o
 
 OBJS_AS_ARGS +=  \
 ATMEGA32.o \
 HAL/keypad/keypad.o \
 HAL/LCD/LCD.o \
+HAL/MAX7221/MAX7221.o \
+MCAL/EXTI/atmega32_EXTI_Driver.o \
 MCAL/GPIO/atmega32_GPIO_Driver.o \
-MCAL/SPI/atmega32_SPI_Driver.o
+MCAL/SPI/atmega32_SPI_Driver.o \
+MCAL/USART/atmega32_USART_Driver.o
 
 C_DEPS +=  \
 ATMEGA32.d \
 HAL/keypad/keypad.d \
 HAL/LCD/LCD.d \
+HAL/MAX7221/MAX7221.d \
+MCAL/EXTI/atmega32_EXTI_Driver.d \
 MCAL/GPIO/atmega32_GPIO_Driver.d \
-MCAL/SPI/atmega32_SPI_Driver.d
+MCAL/SPI/atmega32_SPI_Driver.d \
+MCAL/USART/atmega32_USART_Driver.d
 
 C_DEPS_AS_ARGS +=  \
 ATMEGA32.d \
 HAL/keypad/keypad.d \
 HAL/LCD/LCD.d \
+HAL/MAX7221/MAX7221.d \
+MCAL/EXTI/atmega32_EXTI_Driver.d \
 MCAL/GPIO/atmega32_GPIO_Driver.d \
-MCAL/SPI/atmega32_SPI_Driver.d
+MCAL/SPI/atmega32_SPI_Driver.d \
+MCAL/USART/atmega32_USART_Driver.d
 
 OUTPUT_FILE_PATH +=ATMEGA32.elf
 
@@ -111,38 +130,65 @@ LINKER_SCRIPT_DEP+=
 
 
 
+
+
+
+
+
+
 ./%.o: .././%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/SPI"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 HAL/keypad/%.o: ../HAL/keypad/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/SPI"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 HAL/LCD/%.o: ../HAL/LCD/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/SPI"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+HAL/MAX7221/%.o: ../HAL/MAX7221/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+MCAL/EXTI/%.o: ../MCAL/EXTI/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 MCAL/GPIO/%.o: ../MCAL/GPIO/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/SPI"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
 MCAL/SPI/%.o: ../MCAL/SPI/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.8.1
-	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/SPI"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+MCAL/USART/%.o: ../MCAL/USART/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.8.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.1061\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"../INC" -I"../MCAL/GPIO" -I"../HAL/LCD" -I"../HAL/keypad" -I"../MCAL/EXTI" -I"../MCAL/USART"  -O3 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega32 -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 
